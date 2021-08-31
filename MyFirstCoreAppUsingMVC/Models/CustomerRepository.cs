@@ -30,7 +30,10 @@ namespace MyFirstCoreAppUsingMVC.Models
 
         public Customer GetCustomerById(int Id)
         {
-            var customer = customers.FirstOrDefault(item => item.ID == Id);
+            var customer = customers.FirstOrDefault(item => item.ID == Id); //Returns the first element with matching value in a collection or a default value.
+            //var customer = customers.First(item => item.ID == Id) //Returns the first element with matching value in a collection.
+            //var customer = customers.DefaultIfEmpty(); //Returns all elements in a collection or Default if empty.
+            //var customer = customers.LastOrDefault(); //Returns the last element of a collection or a default value if empty.
             return customer;
         }
     }
