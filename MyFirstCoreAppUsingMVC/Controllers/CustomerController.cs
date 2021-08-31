@@ -10,19 +10,25 @@ namespace MyFirstCoreAppUsingMVC.Controllers
 {
     public class CustomerController : Controller
     {
+        private readonly ICustomerRepository _repository = null;
+
+        public CustomerController(ICustomerRepository repository)
+        {
+            _repository = repository;
+        }
         // GET: CustomerController
         public ActionResult Index()
         {
-            CustomerRepository customerRepository = new CustomerRepository();
-            var result = customerRepository.GetAllCustomers();
+            //CustomerRepository customerRepository = new CustomerRepository();
+            var result = _repository.GetAllCustomers();
             return View(result);
         }
 
         // GET: CustomerController/Details/5
         public ActionResult Details(int id)
         {
-            CustomerRepository customerRepository = new CustomerRepository();
-            var result = customerRepository.GetCustomerById(id);
+            //CustomerRepository customerRepository = new CustomerRepository();
+            var result = _repository.GetCustomerById(id);
             return View(result);
         }
 
@@ -35,13 +41,15 @@ namespace MyFirstCoreAppUsingMVC.Controllers
         // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Customer customer)
         {
-            try
+            //CustomerRepository customerRepository = new CustomerRepository();
+            var result = _repository.CreateCustomer(customer);
+            if (result)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
