@@ -63,5 +63,35 @@ namespace MyFirstCoreAppUsingMVC.Models
             }
             return true;
         }
+
+        public bool UpdateCustomer(Customer customer)
+        {
+            try
+            {
+                var _customer = GetCustomerById(customer.ID);
+                _customer.Name = customer.Name;
+                _customer.Phone = customer.Phone;
+                _customer.Address = customer.Address;
+                _customer.TotalBill = customer.TotalBill;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool DeleteCustomer(int id)
+        {
+            try
+            {
+                customers.Remove(GetCustomerById(id));
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

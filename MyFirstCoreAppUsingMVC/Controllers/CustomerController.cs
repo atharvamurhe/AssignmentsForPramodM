@@ -58,19 +58,21 @@ namespace MyFirstCoreAppUsingMVC.Controllers
         // GET: CustomerController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var customer = _repository.GetCustomerById(id);
+            return View(customer);
         }
 
         // POST: CustomerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Customer customer)
         {
-            try
+            var result = _repository.UpdateCustomer(customer);
+            if (result)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
@@ -79,19 +81,21 @@ namespace MyFirstCoreAppUsingMVC.Controllers
         // GET: CustomerController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var customer = _repository.GetCustomerById(id);
+            return View(customer);
         }
 
         // POST: CustomerController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id,Customer customer)
         {
-            try
+            var result = _repository.DeleteCustomer(id);
+            if (result)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
