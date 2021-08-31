@@ -23,9 +23,15 @@ namespace MyFirstCoreAppUsingMVC.Models
             customers.Add(new Customer { ID = 010, Name = "Yash", Address = "Talegaon Dabhade", Phone = "89234674347", TotalBill = 7000.00M });
         }
 
-        public List<Customer> getAllCustomers()
+        public List<Customer> GetAllCustomers()
         {
             return customers;
+        }
+
+        public Customer GetCustomerById(int Id)
+        {
+            var customer = customers.FirstOrDefault(item => item.ID == Id);
+            return customer;
         }
     }
 }

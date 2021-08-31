@@ -14,14 +14,16 @@ namespace MyFirstCoreAppUsingMVC.Controllers
         public ActionResult Index()
         {
             CustomerRepository customerRepository = new CustomerRepository();
-            var result = customerRepository.getAllCustomers();
+            var result = customerRepository.GetAllCustomers();
             return View(result);
         }
 
         // GET: CustomerController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            CustomerRepository customerRepository = new CustomerRepository();
+            var result = customerRepository.GetCustomerById(id);
+            return View(result);
         }
 
         // GET: CustomerController/Create
