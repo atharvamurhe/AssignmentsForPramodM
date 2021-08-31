@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyFirstCoreAppUsingMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,9 @@ namespace MyFirstCoreAppUsingMVC.Controllers
         // GET: CustomerController
         public ActionResult Index()
         {
-            return View();
+            CustomerRepository customerRepository = new CustomerRepository();
+            var result = customerRepository.getAllCustomers();
+            return View(result);
         }
 
         // GET: CustomerController/Details/5
