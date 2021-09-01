@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StoreManagement.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,5 +13,13 @@ namespace StoreManagement.Data
             : base(options)
         {
         }
+    }
+    public class ProductDbContext : DbContext
+    {
+        public ProductDbContext(DbContextOptions<ProductDbContext> options)
+            : base(options)
+        {
+        }
+        public DbSet<Product> Products { get; set; }
     }
 }
