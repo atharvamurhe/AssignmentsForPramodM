@@ -22,6 +22,7 @@ namespace StoreManagement.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
+            ViewBag.ProductCount = _context.Products.Count(); //Passed data from controller to view using ViewBag
             return View(await _context.Products.ToListAsync());
         }
 
