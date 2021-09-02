@@ -22,4 +22,13 @@ namespace StoreManagement.Data
         }
         public DbSet<Product> Products { get; set; }
     }
+
+    public class ProductExtraInfoDbContext : DbContext
+    {
+        public ProductExtraInfoDbContext(DbContextOptions<ProductExtraInfoDbContext> options)
+            : base(options)
+        {
+        }
+        public DbSet<ProductExtraInfo> ProductExtraInfos { get; set; }
+    }
 }
