@@ -36,6 +36,7 @@ namespace StoreManagement.Controllers
 
             var product = await _context.Products
                 .FirstOrDefaultAsync(m => m.Id == id);
+            ViewData["ProductId"] = id;   //Used ViewData to pass data from controller to view
             if (product == null)
             {
                 return NotFound();

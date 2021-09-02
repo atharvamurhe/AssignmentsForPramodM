@@ -1,3 +1,4 @@
 ﻿<div>
-    <p>Total Product count: @ViewBag.ProductCount</p>
+    @{int count = ViewBag.ProductCount;}
+    <p>Total Product count: @count </p>  @*ViewBag does not need to be casted unlike ViewData*@
 </div>
