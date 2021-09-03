@@ -7,8 +7,8 @@ using StoreManagement.Data;
 
 namespace StoreManagement.Migrations
 {
-    [DbContext(typeof(ProductDbContext))]
-    partial class ProductDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(StoreDbContext))]
+    partial class StoreDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -40,6 +40,27 @@ namespace StoreManagement.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("StoreManagement.Data.Model.ProductExtraInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("HSN_Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsFinanceable")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Product_Cost_Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductExtraInfos");
                 });
 #pragma warning restore 612, 618
         }

@@ -32,12 +32,11 @@ namespace StoreManagement
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddDbContext<ProductDbContext>(options =>
+
+            services.AddDbContext<StoreDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<ProductExtraInfoDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

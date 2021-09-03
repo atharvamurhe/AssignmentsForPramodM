@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoreManagement.Data;
 
-namespace StoreManagement.Migrations.ProductExtraInfoDb
+namespace StoreManagement.Migrations
 {
-    [DbContext(typeof(ProductExtraInfoDbContext))]
-    [Migration("20210902183340_createExtraInfo")]
-    partial class createExtraInfo
+    [DbContext(typeof(StoreDbContext))]
+    [Migration("20210903071937_atharva")]
+    partial class atharva
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,6 +19,30 @@ namespace StoreManagement.Migrations.ProductExtraInfoDb
                 .HasAnnotation("ProductVersion", "3.1.17")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("StoreManagement.Data.Model.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Product_Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Product_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Product_Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Product_Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
 
             modelBuilder.Entity("StoreManagement.Data.Model.ProductExtraInfo", b =>
                 {

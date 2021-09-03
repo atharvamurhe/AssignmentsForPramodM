@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StoreManagement.Data;
 using StoreManagement.Data.Model;
+using StoreManagement.ViewModel;
 
 namespace StoreManagement.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly ProductDbContext _context;
+        private readonly StoreDbContext _context;
 
-        public ProductsController(ProductDbContext context)
+        public ProductsController(StoreDbContext context)
         {
             _context = context;
         }
@@ -36,13 +37,22 @@ namespace StoreManagement.Controllers
 
             var product = await _context.Products
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            var productExtraInfo = await _context.ProductExtraInfos
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             ViewData["ProductId"] = id;   //Used ViewData to pass data from controller to view
-            if (product == null)
+
+            if (product == null && productExtraInfo == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            ProductDetailViewModel productDetailViewModel = new ProductDetailViewModel();
+            productDetailViewModel.Product = product;
+            productDetailViewModel.ProductExtraInfo = productExtraInfo;
+
+            return View(productDetailViewModel);
         }
 
         // GET: Products/Create
@@ -56,15 +66,21 @@ namespace StoreManagement.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Product_Name,Product_Category,Product_Quantity,Product_Price")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Product_Name,Product_Category,Product_Quantity,Product_Price")] Product product,
+            [Bind("Id,Product_Cost_Price,HSN_Code,IsFinanceable")] ProductExtraInfo productExtraInfo)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(product);
+                _context.Add(productExtraInfo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+
+            ProductDetailViewModel productDetailViewModel = new ProductDetailViewModel();
+            productDetailViewModel.Product = product;
+            productDetailViewModel.ProductExtraInfo = productExtraInfo;
+            return View(productDetailViewModel);
         }
 
         // GET: Products/Edit/5
@@ -76,11 +92,17 @@ namespace StoreManagement.Controllers
             }
 
             var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            var productExtraInfo = await _context.ProductExtraInfos.FindAsync(id);
+            if (product == null && productExtraInfo == null)
             {
                 return NotFound();
             }
-            return View(product);
+
+            ProductDetailViewModel productDetailViewModel = new ProductDetailViewModel();
+            productDetailViewModel.Product = product;
+            productDetailViewModel.ProductExtraInfo = productExtraInfo;
+
+            return View(productDetailViewModel);
         }
 
         // POST: Products/Edit/5
@@ -88,7 +110,8 @@ namespace StoreManagement.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Product_Name,Product_Category,Product_Quantity,Product_Price")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Product_Name,Product_Category,Product_Quantity,Product_Price")] Product product,
+            [Bind("Id,Product_Cost_Price,HSN_Code,IsFinanceable")] ProductExtraInfo productExtraInfo)
         {
             if (id != product.Id)
             {
@@ -100,6 +123,7 @@ namespace StoreManagement.Controllers
                 try
                 {
                     _context.Update(product);
+                    _context.Update(productExtraInfo);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -115,7 +139,11 @@ namespace StoreManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+
+            ProductDetailViewModel productDetailViewModel = new ProductDetailViewModel();
+            productDetailViewModel.Product = product;
+            productDetailViewModel.ProductExtraInfo = productExtraInfo;
+            return View(productDetailViewModel);
         }
 
         // GET: Products/Delete/5
