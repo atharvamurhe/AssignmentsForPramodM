@@ -1,4 +1,4 @@
-﻿@model StoreManagement.ViewModel.ProductDetailViewModel
+﻿@model ProductDetailViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -59,8 +59,9 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <partial name="_BackToListPartial" />
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

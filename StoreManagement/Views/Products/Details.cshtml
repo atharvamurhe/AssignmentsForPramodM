@@ -1,4 +1,4 @@
-﻿@model StoreManagement.ViewModel.ProductDetailViewModel
+﻿@model ProductDetailViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -74,5 +74,5 @@
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Product.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <partial name="_BackToListPartial" />
 </div>

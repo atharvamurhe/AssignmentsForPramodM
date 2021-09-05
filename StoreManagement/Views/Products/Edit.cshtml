@@ -1,4 +1,4 @@
-﻿@model StoreManagement.ViewModel.ProductDetailViewModel
+﻿@model ProductDetailViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Product.Id" />
             <div class="form-group">
-                <label asp-for="Product.Product_Name" class="control-label"></label>
+                <label asp-for="Product.Product_Name" class="control-label"></label> @*The asp-for attribute is made available by the For property in the LabelTagHelper*@
                 <input asp-for="Product.Product_Name" class="form-control" />
                 <span asp-validation-for="Product.Product_Name" class="text-danger"></span>
             </div>
