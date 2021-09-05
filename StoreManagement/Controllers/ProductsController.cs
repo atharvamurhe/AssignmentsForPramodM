@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using StoreManagement.Data;
-using StoreManagement.Data.Model;
+using StoreManagement.DAL.Data;
+using StoreManagement.DAL.Data.Model;
 using StoreManagement.ViewModel;
 
 namespace StoreManagement.Controllers

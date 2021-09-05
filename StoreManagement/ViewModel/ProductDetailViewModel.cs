@@ -1,4 +1,4 @@
-﻿using StoreManagement.Data.Model;
+﻿using StoreManagement.DAL.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

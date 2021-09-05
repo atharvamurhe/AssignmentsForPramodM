@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using StoreManagement.Data.Model;
+using StoreManagement.DAL.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StoreManagement.Data
+namespace StoreManagement.DAL.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

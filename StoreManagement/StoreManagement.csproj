@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\StoreManagement.DAL\StoreManagement.DAL.csproj" />
   </ItemGroup>
 
 </Project>

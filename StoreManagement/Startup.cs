@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StoreManagement.Data;
+using StoreManagement.DAL.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
