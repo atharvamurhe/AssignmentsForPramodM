@@ -20,6 +20,12 @@ namespace StoreManagement.Controllers
 
         public IActionResult Index()
         {
+            List<string> list1 = new List<string>
+            {
+                "Atharva", "Tanmay", "Vinayak","Veena","Prajakta"
+            };
+            ViewBag.ListA = list1;
+            ViewData["ListA"] = list1;
             return View();
         }
 
