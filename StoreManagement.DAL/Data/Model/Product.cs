@@ -13,6 +13,8 @@ namespace StoreManagement.DAL.Data.Model
         [Required] //Specifies that this feild is required.
         [StringLength(100)] //Specifies the character limit for the this feild.
         public string Product_Name { get; set; }
+
+        [Required]
         [Display(Name = "Category")] //Specifies the display name for this label.
         public string Product_Category { get; set; }
         public int Product_Quantity { get; set; }

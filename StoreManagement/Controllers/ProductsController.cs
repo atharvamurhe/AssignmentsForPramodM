@@ -2,29 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StoreManagement.DAL.Data;
 using StoreManagement.DAL.Data.Model;
+using StoreManagement.Services.Services;
 using StoreManagement.ViewModel;
 
 namespace StoreManagement.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly StoreDbContext _context;
-
-        public ProductsController(StoreDbContext context)
+        private readonly IProductService _productService;
+        public ProductsController(StoreDbContext context, IProductService productService)
         {
             _context = context;
+            _productService = productService;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
             ViewBag.ProductCount = _context.Products.Count(); //Passed data from controller to view using ViewBag
-            return View(await _context.Products.ToListAsync());
+            return View(await _productService.GetAllProducts());
         }
 
         // GET: Products/Details/5

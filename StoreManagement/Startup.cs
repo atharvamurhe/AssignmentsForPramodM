@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StoreManagement.DAL.Data;
+using StoreManagement.Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace StoreManagement
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<IProductService, ProductService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
