@@ -13,8 +13,9 @@ namespace MyFirstCoreAppUsingMVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private List<Customer> customers = new List<Customer>();
+        private readonly ICustomerRepository _repository = null;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICustomerRepository repository)
         {
             customers.Add(new Customer { ID = 001, Name = "Atharva", Address = "Talegaon Dabhade", Phone = "9405402638", TotalBill = 5000.00M });
             customers.Add(new Customer { ID = 002, Name = "Tanmay", Address = "Pune", Phone = "8087548493", TotalBill = 1500.50M });
@@ -27,11 +28,16 @@ namespace MyFirstCoreAppUsingMVC.Controllers
             customers.Add(new Customer { ID = 009, Name = "Amit", Address = "Pune", Phone = "9287357235", TotalBill = 3400.00M });
             customers.Add(new Customer { ID = 010, Name = "Yash", Address = "Talegaon Dabhade", Phone = "89234674347", TotalBill = 7000.00M });
             _logger = logger;
+            _repository = repository;
         }
 
         public IActionResult Index()
         {
-            return View();
+            List<Customer> custList = _repository.GetAllCustomers();
+            ViewBag.CustList = custList;
+            ViewData["CustList"] = custList;
+
+            return View(custList);
         }
 
         public IActionResult Customers()
