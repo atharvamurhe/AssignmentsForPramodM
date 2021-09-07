@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StoreManagement.DAL.Data;
 using StoreManagement.DAL.Data.Model;
@@ -39,15 +38,18 @@ namespace StoreManagement.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //var product = await _context.Products
+            //    .FirstOrDefaultAsync(m => m.Id == id);
 
-            var productExtraInfo = await _context.ProductExtraInfos
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //var productExtraInfo = await _context.ProductExtraInfos
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            var product = await _productService.GetProductById(id);
+            var productExtraInfo = await _productService.GetProductInfoById(id);
 
             ViewData["ProductId"] = id;   //Used ViewData to pass data from controller to view
 
-            if (product == null && productExtraInfo == null)
+            if (product == null || productExtraInfo == null)
             {
                 return NotFound();
             }
@@ -75,10 +77,11 @@ namespace StoreManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                _context.Add(productExtraInfo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                bool result = await _productService.CreateProduct(product, productExtraInfo);
+                if (result)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             ProductDetailViewModel productDetailViewModel = new ProductDetailViewModel();
@@ -95,9 +98,9 @@ namespace StoreManagement.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
-            var productExtraInfo = await _context.ProductExtraInfos.FindAsync(id);
-            if (product == null && productExtraInfo == null)
+            var product = await _productService.GetProductById(id);
+            var productExtraInfo = await _productService.GetProductInfoById(id);
+            if (product == null || productExtraInfo == null)
             {
                 return NotFound();
             }
@@ -126,9 +129,10 @@ namespace StoreManagement.Controllers
             {
                 try
                 {
-                    _context.Update(product);
-                    _context.Update(productExtraInfo);
-                    await _context.SaveChangesAsync();
+                    //_context.Update(product);
+                    //_context.Update(productExtraInfo);
+                    //await _context.SaveChangesAsync();
+                    await _productService.UpdateProduct(product, productExtraInfo);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -158,8 +162,7 @@ namespace StoreManagement.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _productService.GetProductById(id);
             if (product == null)
             {
                 return NotFound();
@@ -173,15 +176,17 @@ namespace StoreManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            //var product = await _context.Products.FindAsync(id);
+            //_context.Products.Remove(product);
+            //await _context.SaveChangesAsync();
+            await _productService.DeleteProduct(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            //return _context.Products.Any(e => e.Id == id);
+            return _productService.ProductExist(id);
         }
     }
 }

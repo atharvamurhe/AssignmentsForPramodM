@@ -20,6 +20,9 @@ namespace MyFirstCoreAppUsingMVC.Controllers
         public ActionResult Index()
         {
             //CustomerRepository customerRepository = new CustomerRepository();
+            ViewBag.MyName = "atharva";
+            ViewData["MyName"] = "atharva";
+            TempData["MyName"] = "atharva";
             var result = _repository.GetAllCustomers();
             return View(result);
         }
