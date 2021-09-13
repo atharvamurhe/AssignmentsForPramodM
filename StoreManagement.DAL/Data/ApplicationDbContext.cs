@@ -34,6 +34,7 @@ namespace StoreManagement.DAL.Data
         public DbSet<ProductExtraInfo> ProductExtraInfos { get; set; }
         public DbSet<AdvProduct> AdvProducts { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             if (!optionsBuilder.IsConfigured)
