@@ -10,8 +10,8 @@ using StoreManagement.DAL.Data;
 namespace StoreManagement.DAL.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20210909131320_createProductTable")]
-    partial class createProductTable
+    [Migration("20210914045527_createAllTables")]
+    partial class createAllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,6 +62,30 @@ namespace StoreManagement.DAL.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("AdvProducts");
+                });
+
+            modelBuilder.Entity("StoreManagement.DAL.Data.Model.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalBill")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("StoreManagement.DAL.Data.Model.Product", b =>
