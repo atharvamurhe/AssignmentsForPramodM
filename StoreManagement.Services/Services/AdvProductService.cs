@@ -14,19 +14,14 @@ namespace StoreManagement.Services.Services
     {
         public Task<List<AdvProduct>> GetAllProducts();
         public Task<vwAdvProductInfo> GetProductById(int? id);
+        public Task<AdvProduct> GetAdvProductById(int? id);
         public Task<bool> CreateProduct(vwAdvProductInfo vwAdvProductInfo);
-        public Task<bool> CreateCategory(ProductCategory productCategory);
         public Task UpdateProduct(AdvProduct advProduct);
         public Task DeleteProduct(AdvProduct advProduct);
         public bool ProductExist(int id);
     }
     public class AdvProductService : IAdvProductService
     {
-        public Task<bool> CreateCategory(ProductCategory productCategory)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> CreateProduct(vwAdvProductInfo vwAdvProductInfo)
         {
             using (var Context = new StoreDbContext())
@@ -106,6 +101,14 @@ namespace StoreManagement.Services.Services
                     Quantity = resultProduct.Quantity,
                     UpdatedOn = resultProduct.UpdatedOn
                 };
+            }
+        }
+
+        public async Task<AdvProduct> GetAdvProductById(int? id)
+        {
+            using (var Context = new StoreDbContext())
+            {
+                return await Context.AdvProducts.FirstOrDefaultAsync(o => o.Id == id);
             }
         }
 

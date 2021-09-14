@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace StoreManagement.DAL.Data.Model
 {
@@ -24,6 +25,7 @@ namespace StoreManagement.DAL.Data.Model
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty("AdvProduct")]
         public virtual ProductCategory ProductCategory { get; set; }
