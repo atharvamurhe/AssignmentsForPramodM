@@ -29,6 +29,9 @@ namespace StoreManagement.Controllers
             return View(await _advProductService.GetAllProducts());
         }
 
+        //Multiple Route using attribute routing
+        [Route("AdvProducts/Details")]
+        [Route("Details")]
         // GET: AdvProducts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
