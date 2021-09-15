@@ -24,9 +24,21 @@ namespace StoreManagement.Controllers
         }
 
         // GET: AdvProducts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchQuery)
         {
-            return View(await _advProductService.GetAllProducts());
+            var products = new List<AdvProduct>();
+            if (searchQuery == null)
+            {
+                products = await _advProductService.GetAllProducts();
+            }
+            else
+            {
+                ViewData["searchQuery"] = searchQuery;
+                var result = await _advProductService.GetAllProducts();
+                products = result.Where(a => a.Name.ToLower().Contains(searchQuery) || a.ProductCategory.Category.ToLower().Contains(searchQuery)).ToList();
+            }
+            
+            return View(products.OrderBy(o => o.ProductCategory.Category));
         }
 
         //Multiple Route using attribute routing
