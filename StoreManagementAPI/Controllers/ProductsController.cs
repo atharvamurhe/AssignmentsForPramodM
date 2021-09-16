@@ -36,16 +36,17 @@ namespace StoreManagementAPI.Controllers
 
         // POST api/<ProductsController>
         [HttpPost]
-        public async void Post([FromBody] AdvProduct advProduct)
+        public async void Post([FromBody] vwAdvProductInfo vwAdvProductInfo)
         {
-            await _advProductService.UpdateProduct(advProduct);
+            
+            await _advProductService.CreateProduct(vwAdvProductInfo);
         }
 
         // PUT api/<ProductsController>/5
         [HttpPut("{id}")]
-        public async void Put(int id, [FromBody] vwAdvProductInfo vwAdvProductInfo)
+        public async void Put(int id, [FromBody] AdvProduct advProduct)
         {
-            await _advProductService.CreateProduct(vwAdvProductInfo);
+            await _advProductService.UpdateProduct(advProduct);
         }
 
         // DELETE api/<ProductsController>/5
