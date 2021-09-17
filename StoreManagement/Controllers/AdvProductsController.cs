@@ -24,8 +24,17 @@ namespace StoreManagement.Controllers
         }
 
         // GET: AdvProducts
-        public async Task<IActionResult> Index(string searchQuery)
+        public async Task<IActionResult> Index(string searchQuery, int pageChange = 0, int pageNumber = 1, int pageSize = 3)
         {
+            var currentPage = pageNumber + pageChange;
+            ViewData["PerPage"] = pageSize;
+            ViewData["PageNum"] = currentPage;
+
+            if (currentPage == 1)
+            {
+                ViewData["PrevBtn"] = "disabled";
+            }
+
             var products = new List<AdvProduct>();
             if (searchQuery == null)
             {
@@ -35,11 +44,23 @@ namespace StoreManagement.Controllers
             {
                 ViewData["searchQuery"] = searchQuery;
                 var result = await _advProductService.GetAllProducts();
-                products = result.Where(a => a.Name.ToLower().Contains(searchQuery) || a.ProductCategory.Category.ToLower().Contains(searchQuery)).ToList();
+                products = result.Where(a => a.Name.ToLower().Contains(searchQuery.ToLower())
+                || a.ProductCategory.Category.ToLower().Contains(searchQuery.ToLower())).ToList();
             }
-            
-            return View(products.OrderBy(o => o.ProductCategory.Category));
-        }
+            var values = products.OrderBy(o => o.ProductCategory.Category);
+
+            int take = Convert.ToInt32(ViewData["PerPage"]);
+            int skip = (currentPage - 1) * take;
+            int totalResults = values.Count();
+
+            ViewData["TotalResults"] = totalResults;
+            if (skip + take >= totalResults)
+            {
+                ViewData["NextBtn"] = "disabled";
+            }
+
+            return View(values.Skip(skip).Take(take));
+        }   
 
         //Multiple Route using attribute routing
         [Route("AdvProducts/Details")]

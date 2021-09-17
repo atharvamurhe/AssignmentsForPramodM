@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StoreManagement.DAL.Data.Model;
 using StoreManagement.Services.Services;
 using StoreManagement.Services.ViewModel;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace StoreManagementAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -38,7 +40,6 @@ namespace StoreManagementAPI.Controllers
         [HttpPost]
         public async void Post([FromBody] vwAdvProductInfo vwAdvProductInfo)
         {
-            
             await _advProductService.CreateProduct(vwAdvProductInfo);
         }
 
