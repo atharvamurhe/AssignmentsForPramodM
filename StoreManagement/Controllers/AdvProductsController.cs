@@ -35,19 +35,20 @@ namespace StoreManagement.Controllers
                 ViewData["PrevBtn"] = "disabled";
             }
 
-            var products = new List<AdvProduct>();
+            var products = new List<vwJoinData>();
             if (searchQuery == null)
             {
-                products = await _advProductService.GetAllProducts();
+                //products = await _advProductService.GetAllProducts();
+                products = await _advProductService.GetAdvProducts2();
             }
-            else
-            {
-                ViewData["searchQuery"] = searchQuery;
-                var result = await _advProductService.GetAllProducts();
-                products = result.Where(a => a.Name.ToLower().Contains(searchQuery.ToLower())
-                || a.ProductCategory.Category.ToLower().Contains(searchQuery.ToLower())).ToList();
-            }
-            var values = products.OrderBy(o => o.ProductCategory.Category);
+            //else
+            //{
+            //    ViewData["searchQuery"] = searchQuery;
+            //    var result = await _advProductService.GetAllProducts();
+            //    products = result.Where(a => a.Name.ToLower().Contains(searchQuery.ToLower())
+            //    || a.ProductCategory.Category.ToLower().Contains(searchQuery.ToLower())).ToList();
+            //}
+            var values = products.OrderBy(o => o.name);
 
             int take = Convert.ToInt32(ViewData["PerPage"]);
             int skip = (currentPage - 1) * take;

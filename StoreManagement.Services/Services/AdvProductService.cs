@@ -13,6 +13,7 @@ namespace StoreManagement.Services.Services
     public interface IAdvProductService
     {
         public Task<List<AdvProduct>> GetAllProducts();
+        public Task<List<vwJoinData>> GetAdvProducts2();
         public Task<vwAdvProductInfo> GetProductById(int? id);
         public Task<AdvProduct> GetAdvProductById(int? id);
         public Task<bool> CreateProduct(vwAdvProductInfo vwAdvProductInfo);
@@ -74,10 +75,38 @@ namespace StoreManagement.Services.Services
 
         public async Task<List<AdvProduct>> GetAllProducts()
         {
+            var res = await GetAdvProducts2();
             using(var Context = new StoreDbContext())
             {
                 var joinContext = Context.AdvProducts.Include(a => a.ProductCategory);
                 return await joinContext.ToListAsync();
+            }
+        }
+
+        public async Task<List<vwJoinData>> GetAdvProducts2()
+        {
+            using(var Context = new StoreDbContext())
+            {
+                var joinData = (from p in Context.AdvProducts
+                                join i in Context.ProductCategories
+                                on p.CategoryId equals i.Id
+                                into pg
+                               //select pg;
+                               select new vwJoinData
+                               {
+                                   name = p.Name,
+                                   quantity = p.Quantity,
+                                   ProductCategory = pg
+                               }).ToList();
+                //var result = new List<object>();
+                //foreach (var data in joinData)
+                //{
+                //    foreach(var cat in data.ProductCategory)
+                //    {
+                //        result.Add(new { data.name, data.quantity, cat.Category });
+                //    }
+                //}
+                return new List<vwJoinData>();
             }
         }
 
