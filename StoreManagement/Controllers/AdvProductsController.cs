@@ -26,6 +26,7 @@ namespace StoreManagement.Controllers
         // GET: AdvProducts
         public async Task<IActionResult> Index(string searchQuery, int pageChange = 0, int pageNumber = 1, int pageSize = 3)
         {
+            ViewData["joinList"] = _advProductService.GetAdvProducts2();
             var currentPage = pageNumber + pageChange;
             ViewData["PerPage"] = pageSize;
             ViewData["PageNum"] = currentPage;
@@ -35,20 +36,20 @@ namespace StoreManagement.Controllers
                 ViewData["PrevBtn"] = "disabled";
             }
 
-            var products = new List<vwJoinData>();
+            var products = new List<AdvProduct>();
             if (searchQuery == null)
             {
-                //products = await _advProductService.GetAllProducts();
-                products = await _advProductService.GetAdvProducts2();
+                products = await _advProductService.GetAllProducts();
+                //products = await _advProductService.GetAdvProducts2();
             }
-            //else
-            //{
-            //    ViewData["searchQuery"] = searchQuery;
-            //    var result = await _advProductService.GetAllProducts();
-            //    products = result.Where(a => a.Name.ToLower().Contains(searchQuery.ToLower())
-            //    || a.ProductCategory.Category.ToLower().Contains(searchQuery.ToLower())).ToList();
-            //}
-            var values = products.OrderBy(o => o.name);
+            else
+            {
+                ViewData["searchQuery"] = searchQuery;
+                var result = await _advProductService.GetAllProducts();
+                products = result.Where(a => a.Name.ToLower().Contains(searchQuery.ToLower())
+                || a.ProductCategory.Category.ToLower().Contains(searchQuery.ToLower())).ToList();
+            }
+            var values = products.OrderBy(o => o.CategoryId);
 
             int take = Convert.ToInt32(ViewData["PerPage"]);
             int skip = (currentPage - 1) * take;

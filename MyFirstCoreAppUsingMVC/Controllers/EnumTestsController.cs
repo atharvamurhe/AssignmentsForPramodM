@@ -4,53 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using LinQMVC.Data;
-using LinQMVC.Models;
 using Microsoft.EntityFrameworkCore;
+using MyFirstCoreAppUsingMVC.Data;
+using MyFirstCoreAppUsingMVC.Models;
 
-namespace LinQMVC.Controllers
+namespace MyFirstCoreAppUsingMVC.Controllers
 {
-    public class StudentsController : Controller
+    public class EnumTestsController : Controller
     {
-        private readonly LinQMVCContext _context;
+        private readonly MyFirstCoreAppUsingMVCContext _context;
 
-        public StudentsController(LinQMVCContext context)
+        public EnumTestsController(MyFirstCoreAppUsingMVCContext context)
         {
             _context = context;
         }
 
-        // GET: Students
+        // GET: EnumTests
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Student.ToListAsync());
-
-            //return View(await _context.Student.Where(s => s.Age > 9).OfType<int>().ToListAsync());
-
-            //return View(await _context.Student.OrderBy(s => s.Age).ToListAsync());
-
-            //return View(await _context.Student.OrderBy(s => s.Name).ThenByDescending(s => s.Age).ToListAsync());
-
-            //return View(await _context.Student.OrderByDescending(s => s.Name).ToListAsync());
-
-            //var students = await _context.Student.OrderBy(s => s.Age).ToListAsync();
-            //var groupStandardResult = from student in students
-            //                          group student by student.standard into newGroup
-            //                          orderby newGroup.Key
-            //                          select newGroup;
-            //var result = new List<Student>();
-            //foreach (var group in groupStandardResult)
-            //{
-            //    foreach(var s in group)
-            //    {
-            //        result.Add(s);
-            //    }
-            //}
-            //return View(result);
-
-            //return View(await _context.Student.Where(s => s.Age < 8).Join().W.ToListAsync());
+            return View(await _context.EnumTest.ToListAsync());
         }
 
-        // GET: Students/Details/5
+        // GET: EnumTests/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,39 +33,39 @@ namespace LinQMVC.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student
+            var enumTest = await _context.EnumTest
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (student == null)
+            if (enumTest == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(enumTest);
         }
 
-        // GET: Students/Create
+        // GET: EnumTests/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Students/Create
+        // POST: EnumTests/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Age,standard")] Student student)
+        public async Task<IActionResult> Create([Bind("Id,Namw,GetGender")] EnumTest enumTest)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
+                _context.Add(enumTest);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(enumTest);
         }
 
-        // GET: Students/Edit/5
+        // GET: EnumTests/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -98,22 +73,22 @@ namespace LinQMVC.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student.FindAsync(id);
-            if (student == null)
+            var enumTest = await _context.EnumTest.FindAsync(id);
+            if (enumTest == null)
             {
                 return NotFound();
             }
-            return View(student);
+            return View(enumTest);
         }
 
-        // POST: Students/Edit/5
+        // POST: EnumTests/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Age,standard")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Namw,GetGender")] EnumTest enumTest)
         {
-            if (id != student.Id)
+            if (id != enumTest.Id)
             {
                 return NotFound();
             }
@@ -122,12 +97,12 @@ namespace LinQMVC.Controllers
             {
                 try
                 {
-                    _context.Update(student);
+                    _context.Update(enumTest);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.Id))
+                    if (!EnumTestExists(enumTest.Id))
                     {
                         return NotFound();
                     }
@@ -138,10 +113,10 @@ namespace LinQMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(enumTest);
         }
 
-        // GET: Students/Delete/5
+        // GET: EnumTests/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -149,30 +124,30 @@ namespace LinQMVC.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student
+            var enumTest = await _context.EnumTest
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (student == null)
+            if (enumTest == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(enumTest);
         }
 
-        // POST: Students/Delete/5
+        // POST: EnumTests/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Student.FindAsync(id);
-            _context.Student.Remove(student);
+            var enumTest = await _context.EnumTest.FindAsync(id);
+            _context.EnumTest.Remove(enumTest);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(int id)
+        private bool EnumTestExists(int id)
         {
-            return _context.Student.Any(e => e.Id == id);
+            return _context.EnumTest.Any(e => e.Id == id);
         }
     }
 }

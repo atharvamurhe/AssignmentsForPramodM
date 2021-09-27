@@ -7,13 +7,8 @@ namespace StoreManagement.Services.ViewModel
 {
     public class vwJoinData
     {
-        public string name { get; set; }
-        public int quantity { get; set; }
-        public List<ProductCategory> ProductCategory { get; set; }
-    }
-
-    public class vwProductCategory
-    {
+        public string Name { get; set; }
         public string Category { get; set; }
+        public int Quantity { get; set; }
     }
 }

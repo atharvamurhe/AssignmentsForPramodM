@@ -18,11 +18,21 @@ namespace StoreManagement.DAL.Data.Model
         public string Name { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+
+        [Display(Name = "Cost Price")]
         public decimal Cost_Price { get; set; }
+
         [Required]
+        [Display(Name = "HSN Code")]
         public string HSN_Code { get; set; }
+
+        [Display(Name = "Is Financeable")]
         public bool Is_Financeable { get; set; }
+
+        [Display(Name = "Created On")]
         public DateTime? CreatedOn { get; set; }
+
+        [Display(Name = "Updated On")]
         public DateTime? UpdatedOn { get; set; }
 
         [JsonIgnore]

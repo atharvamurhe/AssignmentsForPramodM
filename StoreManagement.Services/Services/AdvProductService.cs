@@ -13,7 +13,7 @@ namespace StoreManagement.Services.Services
     public interface IAdvProductService
     {
         public Task<List<AdvProduct>> GetAllProducts();
-        public Task<List<vwJoinData>> GetAdvProducts2();
+        public List<vwJoinData> GetAdvProducts2();
         public Task<vwAdvProductInfo> GetProductById(int? id);
         public Task<AdvProduct> GetAdvProductById(int? id);
         public Task<bool> CreateProduct(vwAdvProductInfo vwAdvProductInfo);
@@ -75,7 +75,6 @@ namespace StoreManagement.Services.Services
 
         public async Task<List<AdvProduct>> GetAllProducts()
         {
-            var res = await GetAdvProducts2();
             using(var Context = new StoreDbContext())
             {
                 var joinContext = Context.AdvProducts.Include(a => a.ProductCategory);
@@ -83,21 +82,28 @@ namespace StoreManagement.Services.Services
             }
         }
 
-        public async Task<List<vwJoinData>> GetAdvProducts2()
+        public List<vwJoinData> GetAdvProducts2()
         {
             using(var Context = new StoreDbContext())
             {
-                var joinData = (from p in Context.AdvProducts
-                                join i in Context.ProductCategories
-                                on p.CategoryId equals i.Id
-                                into pg
-                               //select pg;
-                               select new vwJoinData
-                               {
-                                   name = p.Name,
-                                   quantity = p.Quantity,
-                                   ProductCategory = pg
-                               }).ToList();
+                try
+                {
+                    var joinData = from c in Context.ProductCategories
+                                    join p in Context.AdvProducts
+                                    on c.Id equals p.CategoryId
+                                    select new vwJoinData
+                                    {
+                                        Name = p.Name,
+                                        Category = c.Category,
+                                        Quantity = p.Quantity
+                                    };
+                    return joinData.ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+                
                 //var result = new List<object>();
                 //foreach (var data in joinData)
                 //{
@@ -106,7 +112,7 @@ namespace StoreManagement.Services.Services
                 //        result.Add(new { data.name, data.quantity, cat.Category });
                 //    }
                 //}
-                return new List<vwJoinData>();
+                
             }
         }
 

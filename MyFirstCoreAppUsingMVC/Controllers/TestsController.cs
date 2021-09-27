@@ -4,53 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using LinQMVC.Data;
-using LinQMVC.Models;
 using Microsoft.EntityFrameworkCore;
+using MyFirstCoreAppUsingMVC.Data;
+using MyFirstCoreAppUsingMVC.Models;
 
-namespace LinQMVC.Controllers
+namespace MyFirstCoreAppUsingMVC.Controllers
 {
-    public class StudentsController : Controller
+    public class TestsController : Controller
     {
-        private readonly LinQMVCContext _context;
+        private readonly MyFirstCoreAppUsingMVCContext _context;
 
-        public StudentsController(LinQMVCContext context)
+        public TestsController(MyFirstCoreAppUsingMVCContext context)
         {
             _context = context;
         }
 
-        // GET: Students
+        // GET: Tests
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Student.ToListAsync());
-
-            //return View(await _context.Student.Where(s => s.Age > 9).OfType<int>().ToListAsync());
-
-            //return View(await _context.Student.OrderBy(s => s.Age).ToListAsync());
-
-            //return View(await _context.Student.OrderBy(s => s.Name).ThenByDescending(s => s.Age).ToListAsync());
-
-            //return View(await _context.Student.OrderByDescending(s => s.Name).ToListAsync());
-
-            //var students = await _context.Student.OrderBy(s => s.Age).ToListAsync();
-            //var groupStandardResult = from student in students
-            //                          group student by student.standard into newGroup
-            //                          orderby newGroup.Key
-            //                          select newGroup;
-            //var result = new List<Student>();
-            //foreach (var group in groupStandardResult)
-            //{
-            //    foreach(var s in group)
-            //    {
-            //        result.Add(s);
-            //    }
-            //}
-            //return View(result);
-
-            //return View(await _context.Student.Where(s => s.Age < 8).Join().W.ToListAsync());
+            return View(await _context.Test.ToListAsync());
         }
 
-        // GET: Students/Details/5
+        // GET: Tests/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,39 +33,40 @@ namespace LinQMVC.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student
+            var test = await _context.Test
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (student == null)
+            if (test == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(test);
         }
 
-        // GET: Students/Create
+        // GET: Tests/Create
         public IActionResult Create()
         {
+            ViewData["uniqueId"] = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             return View();
         }
 
-        // POST: Students/Create
+        // POST: Tests/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Age,standard")] Student student)
+        public async Task<IActionResult> Create([Bind("Id,Name,UniqueId")] Test test)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
+                _context.Add(test);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(test);
         }
 
-        // GET: Students/Edit/5
+        // GET: Tests/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -98,22 +74,22 @@ namespace LinQMVC.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student.FindAsync(id);
-            if (student == null)
+            var test = await _context.Test.FindAsync(id);
+            if (test == null)
             {
                 return NotFound();
             }
-            return View(student);
+            return View(test);
         }
 
-        // POST: Students/Edit/5
+        // POST: Tests/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Age,standard")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UniqueId")] Test test)
         {
-            if (id != student.Id)
+            if (id != test.Id)
             {
                 return NotFound();
             }
@@ -122,12 +98,12 @@ namespace LinQMVC.Controllers
             {
                 try
                 {
-                    _context.Update(student);
+                    _context.Update(test);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.Id))
+                    if (!TestExists(test.Id))
                     {
                         return NotFound();
                     }
@@ -138,10 +114,10 @@ namespace LinQMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(test);
         }
 
-        // GET: Students/Delete/5
+        // GET: Tests/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -149,30 +125,30 @@ namespace LinQMVC.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student
+            var test = await _context.Test
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (student == null)
+            if (test == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(test);
         }
 
-        // POST: Students/Delete/5
+        // POST: Tests/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Student.FindAsync(id);
-            _context.Student.Remove(student);
+            var test = await _context.Test.FindAsync(id);
+            _context.Test.Remove(test);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(int id)
+        private bool TestExists(int id)
         {
-            return _context.Student.Any(e => e.Id == id);
+            return _context.Test.Any(e => e.Id == id);
         }
     }
 }
