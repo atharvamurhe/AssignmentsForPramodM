@@ -5,11 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" />
 <h1>Index</h1>
 
 <form asp-controller="AdvProducts" asp-action="Index" method="get" onsubmit="beforeSubmit()">
     <div class="d-flex mb-3  justify-content-center">
-        <input class="form-control w-50" value="@ViewData["searchQuery"]" name="searchQuery" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control w-50" value="@ViewData["searchQuery"]" name="searchQuery" type="search" placeholder="Search for name or category" aria-label="Search">
         <button class="btn btn-outline-success mx-2" type="submit">Search</button>
     </div>
     <div class="d-flex justify-content-center">
@@ -101,10 +102,10 @@
 
 @*ViewModel data*@
 <h1>Data Using ViewModel and Join</h1>
-@{ 
+@{
     var viewModel = ViewData["joinList"] as List<vwJoinData>;
 }
-<table class="table">
+<table id="join-table" class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -135,3 +136,16 @@
         }
     </tbody>
 </table>
+
+@section Scripts{
+    <script src="~/js/jquery-3.5.1.js"></script>
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#join-table').DataTable();
+        });
+    </script>
+}
+
+
